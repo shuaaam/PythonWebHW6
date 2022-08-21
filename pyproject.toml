@@ -6,6 +6,7 @@ authors = ["Oleksandra Melnyk <oleksandramelnyk.ibm@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+aiopath = "^0.6.10"
 
 [tool.poetry.dev-dependencies]
 
