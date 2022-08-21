@@ -1,6 +1,7 @@
-import asyncio
 from pathlib import Path
+import asyncio
 from aiopath import AsyncPath
+
 import shutil
 import sys
 import file_parser as parser
@@ -8,19 +9,25 @@ from normalize import normalize
 
 
 async def handle_media(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
     await target_folder.mkdir(exist_ok=True, parents=True)
     await filename.replace(target_folder / normalize(filename.name))
 
 
 async def handle_other(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
     await target_folder.mkdir(exist_ok=True, parents=True)
     await filename.replace(target_folder / normalize(filename.name))
 
 
 async def handle_archive(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
     await target_folder.mkdir(exist_ok=True, parents=True)
     folder_for_file = target_folder / \
-                      normalize(filename.name.replace(filename.suffix, ''))
+        normalize(filename.name.replace(filename.suffix, ''))
 
     await folder_for_file.mkdir(exist_ok=True, parents=True)
     try:
@@ -28,12 +35,13 @@ async def handle_archive(filename: Path, target_folder: Path):
                               str(folder_for_file.resolve()))
     except shutil.ReadError:
         print(f'{filename} не є архівом!')
-        await folder_for_file.rmdir()
+        folder_for_file.rmdir()
         return None
-    await filename.unlink()
+    filename.unlink()
 
 
 async def handle_folder(folder: Path):
+    folder = AsyncPath(folder)
     try:
         await folder.rmdir()
     except OSError:
@@ -41,8 +49,7 @@ async def handle_folder(folder: Path):
 
 
 async def main(folder: Path):
-    parser.scan(folder)
-    await main(folder)
+    await parser.scan(folder)
 
     for file in parser.JPEG_IMAGES:
         await handle_media(file, folder / 'images' / 'JPEG')
@@ -90,7 +97,6 @@ async def main(folder: Path):
 
 
 if __name__ == '__main__':
-    #    if sys.argv[1]:
-    #        folder = AsyncPath(sys.argv[1])
-    folder = Path("/Users/oleksandramelnyk/prog/hw-web/PythonWebHW6/garbage")
-    asyncio.run(main(folder))
+#    if sys.argv[1]:
+        folder_for_scan = Path("garbage")
+        asyncio.run(main(folder_for_scan))

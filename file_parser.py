@@ -1,6 +1,7 @@
 import sys
-import asyncio
 from pathlib import Path
+import asyncio
+from aiopath import AsyncPath
 
 JPEG_IMAGES = []
 JPG_IMAGES = []
@@ -56,13 +57,15 @@ def get_extension(filename: str) -> str:
     return Path(filename).suffix[1:].upper()
 
 
-def scan(folder: Path) -> None:
-    for item in folder.iterdir():
+async def scan(folder: Path) -> None:
+    folder = AsyncPath(folder)
+    async for item in folder.iterdir():
         if item.is_dir():
             if item.name not in ('archives', 'video', 'audio', 'documents', 'images', 'other_files'):
                 FOLDERS.append(item)
-            scan(item)
+                await scan(item)
             continue
+
         ext = get_extension(item.name)
         fullname = folder / item.name
         if not ext:
