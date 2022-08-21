@@ -1,98 +1,101 @@
 from pathlib import Path
+import asyncio
+from aiopath import AsyncPath
 import shutil
 import sys
 import file_parser as parser
 from normalize import normalize
 
 
-def handle_media(filename: Path, target_folder: Path):
-    target_folder.mkdir(exist_ok=True, parents=True)
-    filename.replace(target_folder / normalize(filename.name))
+async def handle_media(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
+    await target_folder.mkdir(exist_ok=True, parents=True)
+    await filename.replace(target_folder / normalize(filename.name))
 
 
-def handle_other(filename: Path, target_folder: Path):
-    target_folder.mkdir(exist_ok=True, parents=True)
-    filename.replace(target_folder / normalize(filename.name))
+async def handle_other(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
+    await target_folder.mkdir(exist_ok=True, parents=True)
+    await filename.replace(target_folder / normalize(filename.name))
 
 
-def handle_archive(filename: Path, target_folder: Path):
-    # Создаем папку для архивов
-    target_folder.mkdir(exist_ok=True, parents=True)
-    #  Создаем папку куда распаковываем архив
-    # Берем суффикс у файла и убираем replace(filename.suffix, '')
-    folder_for_file = target_folder / \
-        normalize(filename.name.replace(filename.suffix, ''))
-    #  создаем папку для архива с именем файла
+async def handle_archive(filename: Path, target_folder: Path):
+    filename = AsyncPath(filename)
+    target_folder = AsyncPath(target_folder)
+    await target_folder.mkdir(exist_ok=True, parents=True)
+    await filename.replace(target_folder / (normalize(filename.name[:-len(filename.suffix)]) + filename.suffix))
 
-    folder_for_file.mkdir(exist_ok=True, parents=True)
     try:
-        shutil.unpack_archive(str(filename.resolve()),
-                              str(folder_for_file.resolve()))
+        shutil.unpack_archive(str(filename.resolve()), str(filename.resolve()))
     except shutil.ReadError:
         print(f'{filename} не є архівом!')
-        folder_for_file.rmdir()
+        filename.rmdir()
         return None
-    filename.unlink()
+    await filename.unlink()
 
 
-def handle_folder(folder: Path):
+async def handle_folder(folder: Path):
+    folder = AsyncPath(folder)
     try:
-        folder.rmdir()
+        await folder.rmdir()
     except OSError:
         print(f'Не вдалося видалити папку {folder}')
 
 
-def main(folder: Path):
-    parser.scan(folder)
+async def main(folder: Path):
+    await parser.scan(folder)
 
     for file in parser.JPEG_IMAGES:
-        handle_media(file, folder / 'images' / 'JPEG')
+        await handle_media(file, folder / 'images' / 'JPEG')
     for file in parser.JPG_IMAGES:
-        handle_media(file, folder / 'images' / 'JPG')
+        await handle_media(file, folder / 'images' / 'JPG')
     for file in parser.PNG_IMAGES:
-        handle_media(file, folder / 'images' / 'PNG')
+        await handle_media(file, folder / 'images' / 'PNG')
     for file in parser.SVG_IMAGES:
-        handle_media(file, folder / 'images' / 'SVG')
+        await handle_media(file, folder / 'images' / 'SVG')
     for file in parser.MP3_AUDIO:
-        handle_media(file, folder / 'audio' / 'MP3')
+        await handle_media(file, folder / 'audio' / 'MP3')
     for file in parser.OGG_AUDIO:
-        handle_media(file, folder / 'audio' / 'OGG')
+        await handle_media(file, folder / 'audio' / 'OGG')
     for file in parser.WAV_AUDIO:
-        handle_media(file, folder / 'audio' / 'WAV')
+        await handle_media(file, folder / 'audio' / 'WAV')
     for file in parser.AMR_AUDIO:
-        handle_media(file, folder / 'audio' / 'AMR')
+        await handle_media(file, folder / 'audio' / 'AMR')
     for file in parser.AVI_VIDEO:
-        handle_media(file, folder / 'video' / 'AVI')
+        await handle_media(file, folder / 'video' / 'AVI')
     for file in parser.MP4_VIDEO:
-        handle_media(file, folder / 'video' / 'MP4')
+        await handle_media(file, folder / 'video' / 'MP4')
     for file in parser.MOV_VIDEO:
-        handle_media(file, folder / 'video' / 'MOV')
+        await handle_media(file, folder / 'video' / 'MOV')
     for file in parser.MKV_VIDEO:
-        handle_media(file, folder / 'video' / 'MKV')
+        await handle_media(file, folder / 'video' / 'MKV')
     for file in parser.DOC_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'DOC')
+        await handle_media(file, folder / 'documents' / 'DOC')
     for file in parser.DOCX_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'DOCX')
+        await handle_media(file, folder / 'documents' / 'DOCX')
     for file in parser.TXT_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'TXT')
+        await handle_media(file, folder / 'documents' / 'TXT')
     for file in parser.PDF_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'PDF')
+        await handle_media(file, folder / 'documents' / 'PDF')
     for file in parser.XLSX_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'XLSX')
+        await handle_media(file, folder / 'documents' / 'XLSX')
     for file in parser.PPTX_DOCUMENTS:
-        handle_media(file, folder / 'documents' / 'PPTX')
+        await handle_media(file, folder / 'documents' / 'PPTX')
     for file in parser.OTHER_FILES:
-        handle_other(file, folder / 'other_files')
+        await handle_other(file, folder / 'other_files')
     for file in parser.ARCHIVES:
-        handle_archive(file, folder / 'archives')
+        await handle_archive(file, folder / 'archives')
 
-    # Выполняем реверс списка для того, чтобы все папки удалить.
     for folder in parser.FOLDERS[::-1]:
-        handle_folder(folder)
+        await handle_folder(folder)
 
 
 if __name__ == '__main__':
     if sys.argv[1]:
-        folder_for_scan = Path(sys.argv[1])
-        print(f'Start in folder {folder_for_scan.resolve()}')
-        main(folder_for_scan.resolve())
+        folder = Path(sys.argv[1])
+        if folder.is_dir():
+            asyncio.run(main(folder))
+        else:
+            print(f'{folder} не є папкою!')

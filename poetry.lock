@@ -1,8 +1,173 @@
-package = []
+[[package]]
+name = "aiofile"
+version = "3.8.1"
+description = "Asynchronous file operations."
+category = "main"
+optional = false
+python-versions = ">=3.7, <4"
+
+[package.dependencies]
+caio = ">=0.9.0,<0.10.0"
+
+[package.extras]
+develop = ["aiomisc", "pytest", "pytest-cov"]
+
+[[package]]
+name = "aiopath"
+version = "0.6.10"
+description = "📁 Async pathlib for Python"
+category = "main"
+optional = false
+python-versions = ">=3.10"
+
+[package.dependencies]
+aiofile = ">=3.5.0,<4"
+anyio = ">=3.2.0,<4"
+
+[[package]]
+name = "anyio"
+version = "3.6.1"
+description = "High level compatibility layer for multiple asynchronous event loop implementations"
+category = "main"
+optional = false
+python-versions = ">=3.6.2"
+
+[package.dependencies]
+idna = ">=2.8"
+sniffio = ">=1.1"
+
+[package.extras]
+trio = ["trio (>=0.16)"]
+test = ["uvloop (>=0.15)", "mock (>=4)", "uvloop (<0.15)", "contextlib2", "trustme", "pytest-mock (>=3.6.1)", "pytest (>=7.0)", "hypothesis (>=4.0)", "coverage[toml] (>=4.5)"]
+doc = ["sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme", "packaging"]
+
+[[package]]
+name = "caio"
+version = "0.9.8"
+description = "Asynchronous file IO for Linux MacOS or Windows."
+category = "main"
+optional = false
+python-versions = ">=3.5, <4"
+
+[package.extras]
+develop = ["aiomisc", "pytest", "pytest-cov"]
+
+[[package]]
+name = "certifi"
+version = "2022.6.15"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "charset-normalizer"
+version = "2.1.1"
+description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.extras]
+unicode_backport = ["unicodedata2"]
+
+[[package]]
+name = "idna"
+version = "3.3"
+description = "Internationalized Domain Names in Applications (IDNA)"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "requests"
+version = "2.28.1"
+description = "Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = ">=3.7, <4"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+charset-normalizer = ">=2,<3"
+idna = ">=2.5,<4"
+urllib3 = ">=1.21.1,<1.27"
+
+[package.extras]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
+use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "sniffio"
+version = "1.2.0"
+description = "Sniff out which async library your code is running under"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "urllib3"
+version = "1.26.11"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+
+[package.extras]
+brotli = ["brotlicffi (>=0.8.0)", "brotli (>=1.0.9)", "brotlipy (>=0.6.0)"]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "17ca553b0bb9298a6ed528dd21e544ca433179192dba32a9920168e1c199d74f"
+content-hash = "2ec93fc060c5dc173d921570e095bacf8e8e9033f75974b2446875e4320181fd"
 
 [metadata.files]
+aiofile = [
+    {file = "aiofile-3.8.1.tar.gz", hash = "sha256:1623b98d88fbd16bbd2808d010de4e185a700e950ed3f17455dd851aa2455f40"},
+]
+aiopath = [
+    {file = "aiopath-0.6.10-py2.py3-none-any.whl", hash = "sha256:44a5376de098b4875eefa4b4599f5ac99fd9451b88c314f237716571e16ccce2"},
+    {file = "aiopath-0.6.10.tar.gz", hash = "sha256:6ca97a864fe32478d53af6c40e1951de64ab01d6b402d88524ce72d80362eb7a"},
+]
+anyio = [
+    {file = "anyio-3.6.1-py3-none-any.whl", hash = "sha256:cb29b9c70620506a9a8f87a309591713446953302d7d995344d0d7c6c0c9a7be"},
+    {file = "anyio-3.6.1.tar.gz", hash = "sha256:413adf95f93886e442aea925f3ee43baa5a765a64a0f52c6081894f9992fdd0b"},
+]
+caio = [
+    {file = "caio-0.9.8-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:e9969edea88caf2d38059fe7164d1271f8ba6d94d39e890a9bdbabca483a9a19"},
+    {file = "caio-0.9.8-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:38a30e7e0184b45a54fbc757ac3e1a2b8eb9c41f362d2f4bf5854d50bff73c6d"},
+    {file = "caio-0.9.8-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:7275e5ca3a4960d40ca509ed19d7d23ea0156dbb4ac5834cf08724c989f8be24"},
+    {file = "caio-0.9.8-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:2316252dbb16195b0292a5dd665901966c080001d0ceed8540f98c073b921b0c"},
+    {file = "caio-0.9.8-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:d29709f5ff9582d00ebed37327f14e247eedf33e18d4b35a6af6ab30cc8df9b7"},
+    {file = "caio-0.9.8-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:65395113a506efb605d90c75438686718c1d4784bc029e04d235adcf5d5d3a39"},
+    {file = "caio-0.9.8-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:f748b0605b9b95bfa58c81a5373555d4c82228f9b3dfd608de706a906fe703f9"},
+    {file = "caio-0.9.8-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:0ab003c48679d00b83992d68012c1126e4b91d6c27d16f363d0e5c9a499898e9"},
+    {file = "caio-0.9.8-py3-none-any.whl", hash = "sha256:c3704fba1781c252d5dcfce4e81dc5af2d50a61062f00fc74dd252a419af8918"},
+    {file = "caio-0.9.8.tar.gz", hash = "sha256:70c9556dc003df1e3ea8dca5cc32ef0bb9213cfbc5a2b80003ba37018689326f"},
+]
+certifi = [
+    {file = "certifi-2022.6.15-py3-none-any.whl", hash = "sha256:fe86415d55e84719d75f8b69414f6438ac3547d2078ab91b67e779ef69378412"},
+    {file = "certifi-2022.6.15.tar.gz", hash = "sha256:84c85a9078b11105f04f3036a9482ae10e4621616db313fe045dd24743a0820d"},
+]
+charset-normalizer = [
+    {file = "charset-normalizer-2.1.1.tar.gz", hash = "sha256:5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"},
+    {file = "charset_normalizer-2.1.1-py3-none-any.whl", hash = "sha256:83e9a75d1911279afd89352c68b45348559d1fc0506b054b346651b5e7fee29f"},
+]
+idna = [
+    {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
+    {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
+]
+requests = [
+    {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
+    {file = "requests-2.28.1.tar.gz", hash = "sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"},
+]
+sniffio = [
+    {file = "sniffio-1.2.0-py3-none-any.whl", hash = "sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663"},
+    {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
+]
+urllib3 = [
+    {file = "urllib3-1.26.11-py2.py3-none-any.whl", hash = "sha256:c33ccba33c819596124764c23a97d25f32b28433ba0dedeb77d873a38722c9bc"},
+    {file = "urllib3-1.26.11.tar.gz", hash = "sha256:ea6e8fb210b19d950fab93b60c9009226c63a28808bc8386e05301e25883ac0a"},
+]
