@@ -60,7 +60,7 @@ def get_extension(filename: str) -> str:
 async def scan(folder: Path) -> None:
     folder = AsyncPath(folder)
     async for item in folder.iterdir():
-        if item.is_dir():
+        if await item.is_dir():
             if item.name not in ('archives', 'video', 'audio', 'documents', 'images', 'other_files'):
                 FOLDERS.append(item)
                 await scan(item)

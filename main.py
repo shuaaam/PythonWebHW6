@@ -1,7 +1,6 @@
 from pathlib import Path
 import asyncio
 from aiopath import AsyncPath
-
 import shutil
 import sys
 import file_parser as parser
@@ -26,18 +25,15 @@ async def handle_archive(filename: Path, target_folder: Path):
     filename = AsyncPath(filename)
     target_folder = AsyncPath(target_folder)
     await target_folder.mkdir(exist_ok=True, parents=True)
-    folder_for_file = target_folder / \
-        normalize(filename.name.replace(filename.suffix, ''))
+    await filename.replace(target_folder / (normalize(filename.name[:-len(filename.suffix)]) + filename.suffix))
 
-    await folder_for_file.mkdir(exist_ok=True, parents=True)
     try:
-        shutil.unpack_archive(str(filename.resolve()),
-                              str(folder_for_file.resolve()))
+        shutil.unpack_archive(str(filename.resolve()), str(filename.resolve()))
     except shutil.ReadError:
         print(f'{filename} не є архівом!')
-        folder_for_file.rmdir()
+        filename.rmdir()
         return None
-    filename.unlink()
+    await filename.unlink()
 
 
 async def handle_folder(folder: Path):
@@ -97,6 +93,9 @@ async def main(folder: Path):
 
 
 if __name__ == '__main__':
-#    if sys.argv[1]:
-        folder_for_scan = Path("garbage")
-        asyncio.run(main(folder_for_scan))
+    if sys.argv[1]:
+        folder = Path(sys.argv[1])
+        if folder.is_dir():
+            asyncio.run(main(folder))
+        else:
+            print(f'{folder} не є папкою!')
